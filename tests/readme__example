@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+srcfile="$(mktemp /tmp/reg.XXXXXXXXXX)"
+exefile="$(mktemp /tmp/reg.XXXXXXXXXX)"
+
+sed -n '/^```c/,/^```/ p' < "$dir/../README.md" | sed '1d;$d' > "$srcfile"
+
+cc -o "$exefile" -I"$dir/.." "$dir/../reg.c" -xc - < "$srcfile"
+
+output="$("$exefile")"
+
+expected="Hello, world!"
+
+if [ "$output" != "$expected" ]; then
+    echo "Unexpected output." >&2
+    echo "$output"
+    exit 1
+fi
