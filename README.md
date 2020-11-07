@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
 ## Documentation
 
-Read `reg.h`. The comments will explain everything.
+Read `regbuf.h`. The comments will explain everything.
 
 
 ## License
