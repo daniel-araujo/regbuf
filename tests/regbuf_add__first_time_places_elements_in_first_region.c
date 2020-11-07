@@ -1,30 +1,30 @@
 #include <assert.h>
 
-#include "../reg.h"
+#include "../regbuf.h"
 
 int main(int argc, char *argv[])
 {
 	char region1[3] = {};
 	char region2[3] = {};
 
-	struct reg_opts_region regions[] = {
-		(struct reg_opts_region) {
+	struct regbuf_opts_region regions[] = {
+		(struct regbuf_opts_region) {
 			.buffer = region1,
 			.length = sizeof(region1),
 		},
-		(struct reg_opts_region) {
+		(struct regbuf_opts_region) {
 			.buffer = region2,
 			.length = sizeof(region2),
 		},
 	};
 
-	reg_t reg = reg_create(&(struct reg_opts) {
+	regbuf_t r = regbuf_create(&(struct regbuf_opts) {
 		.regions = regions,
 		.regions_length = sizeof(regions) / sizeof(regions[0])
 	});
 
 	const char data[] = { 1, 2 };
-	size_t added = reg_add(reg, data, sizeof(data));
+	size_t added = regbuf_add(r, data, sizeof(data));
 
 	assert(added == 2);
 

@@ -1,4 +1,4 @@
-# Reg
+# Regbuf
 
 A ring buffer that spans over multiple regions in portable C code. Useful in
 memory constrained environments with multiple memory regions.
@@ -6,7 +6,7 @@ memory constrained environments with multiple memory regions.
 
 ## How to use
 
-Just copy `reg.c` and `reg.h` into your project and compile.
+Just copy `regbuf.c` and `regbuf.h` into your project and compile.
 
 You can safely include the header file in your C++ code.
 
@@ -14,7 +14,7 @@ You can safely include the header file in your C++ code.
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "./reg.h"
+#include "regbuf.h"
 
 char static_mem_region[10] = {};
 
@@ -22,31 +22,31 @@ int main(int argc, char *argv[])
 {
 	char *dynamic_mem_region = malloc(10);
 
-	struct reg_opts_region regions[] = {
-		(struct reg_opts_region) {
+	struct regbuf_opts_region regions[] = {
+		(struct regbuf_opts_region) {
 			.buffer = static_mem_region,
 			.length = sizeof(static_mem_region),
 		},
-		(struct reg_opts_region) {
+		(struct regbuf_opts_region) {
 			.buffer = dynamic_mem_region,
 			.length = 10,
 		},
 	};
 
-	reg_t reg = reg_create(&(struct reg_opts) {
+	regbuf_t r = regbuf_create(&(struct regbuf_opts) {
 		.regions = regions,
 		.regions_length = 2
 	});
 
 	const char input[] = "Hello, world!\n";
-	reg_add(reg, input, sizeof(input));
+	regbuf_add(r, input, sizeof(input));
 
 	char output[20] = {};
-	reg_get(reg, output, sizeof(output));
+	regbuf_get(r, output, sizeof(output));
 
 	puts(output);
 
-	reg_destroy(reg);
+	regbuf_destroy(r);
 	free(dynamic_mem_region);
 
 	return 0;

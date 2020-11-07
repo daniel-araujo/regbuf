@@ -1,4 +1,4 @@
-// Reg release 1
+// Regbuf release 1
 //
 // copyright (c) 2020 Daniel Araujo
 //
@@ -28,7 +28,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "reg.h"
+#include "regbuf.h"
 
 // Notes:
 //
@@ -40,7 +40,7 @@
 // this means that every region is filled. If size is 0 then no data exists.
 
 // A handle is just a pointer to this structure.
-struct reg_handle
+struct regbuf_handle
 {
 	// Index of the region that the head is pointing to.
 	size_t head_region;
@@ -60,13 +60,13 @@ struct reg_handle
 	// Total number of regions in array.
 	size_t regions_length;
 
-	struct reg_opts_region regions[];
+	struct regbuf_opts_region regions[];
 };
 
 /*
  * Advances to the next region. Wraps around correctly.
  */
-static inline size_t next_region(struct reg_handle *h, size_t current) {
+static inline size_t next_region(struct regbuf_handle *h, size_t current) {
 	current += 1;
 
 	if (current == h->regions_length) {
@@ -80,7 +80,7 @@ static inline size_t next_region(struct reg_handle *h, size_t current) {
  * Returns remaining size in the current region from the given index up to
  * head index if it is in the same region.
  */
-static inline size_t up_to_head(struct reg_handle *h, size_t region, size_t index) {
+static inline size_t up_to_head(struct regbuf_handle *h, size_t region, size_t index) {
 	size_t remaining;
 
 	if (region == h->head_region) {
@@ -113,7 +113,7 @@ static inline size_t up_to_head(struct reg_handle *h, size_t region, size_t inde
  * Returns remaining size in the current region from the given index up to
  * tail index if it is in the same region.
  */
-static inline size_t up_to_tail(struct reg_handle *h, size_t region, size_t index) {
+static inline size_t up_to_tail(struct regbuf_handle *h, size_t region, size_t index) {
 	size_t remaining;
 
 	if (region == h->tail_region) {
@@ -142,16 +142,16 @@ static inline size_t up_to_tail(struct reg_handle *h, size_t region, size_t inde
 	return remaining;
 }
 
-reg_t reg_create(struct reg_opts *opts)
+regbuf_t regbuf_create(struct regbuf_opts *opts)
 {
 	if (opts->regions_length == 0) {
 		return NULL;
 	}
 
 	// How much memory region info takes up.
-	const size_t mem_regions = opts->regions_length * sizeof(struct reg_opts_region);
+	const size_t mem_regions = opts->regions_length * sizeof(struct regbuf_opts_region);
 
-	struct reg_handle *h = malloc(sizeof(struct reg_handle) + mem_regions);
+	struct regbuf_handle *h = malloc(sizeof(struct regbuf_handle) + mem_regions);
 
 	if (h == NULL) {
 		return NULL;
@@ -166,23 +166,23 @@ reg_t reg_create(struct reg_opts *opts)
 
 	memmove(h->regions, opts->regions, mem_regions);
 
-	return (reg_t) h;
+	return (regbuf_t) h;
 }
 
-enum reg_error reg_error(reg_t handle)
+enum regbuf_error regbuf_error(regbuf_t handle)
 {
-	struct reg_handle *h = (struct reg_handle *) handle;
+	struct regbuf_handle *h = (struct regbuf_handle *) handle;
 
 	if (h == NULL) {
-		return REG_ERROR_OUT_OF_MEMORY;
+		return regbuf_ERROR_OUT_OF_MEMORY;
 	} else {
-		return REG_ERROR_NONE;
+		return regbuf_ERROR_NONE;
 	}
 }
 
-void reg_destroy(reg_t handle)
+void regbuf_destroy(regbuf_t handle)
 {
-	struct reg_handle *h = (struct reg_handle *) handle;
+	struct regbuf_handle *h = (struct regbuf_handle *) handle;
 
 	if (h == NULL) {
 		// Must have failed to create.
@@ -197,9 +197,9 @@ void reg_destroy(reg_t handle)
 	free(h);
 }
 
-size_t reg_add(reg_t handle, const void *data, size_t length)
+size_t regbuf_add(regbuf_t handle, const void *data, size_t length)
 {
-	struct reg_handle *h = (struct reg_handle *) handle;
+	struct regbuf_handle *h = (struct regbuf_handle *) handle;
 
 	// Offset into current data.
 	size_t data_offset = 0;
@@ -243,9 +243,9 @@ size_t reg_add(reg_t handle, const void *data, size_t length)
 	return written;
 }
 
-size_t reg_pop(reg_t handle, size_t length)
+size_t regbuf_pop(regbuf_t handle, size_t length)
 {
-	struct reg_handle *h = (struct reg_handle *) handle;
+	struct regbuf_handle *h = (struct regbuf_handle *) handle;
 
 	size_t removed = 0;
 
@@ -278,9 +278,9 @@ size_t reg_pop(reg_t handle, size_t length)
 	return removed;
 }
 
-size_t reg_get(reg_t handle, void *data, size_t length)
+size_t regbuf_get(regbuf_t handle, void *data, size_t length)
 {
-	struct reg_handle *h = (struct reg_handle *) handle;
+	struct regbuf_handle *h = (struct regbuf_handle *) handle;
 
 	size_t retrieved = 0;
 
@@ -317,8 +317,8 @@ size_t reg_get(reg_t handle, void *data, size_t length)
 	return retrieved;
 }
 
-size_t reg_used(reg_t handle)
+size_t regbuf_used(regbuf_t handle)
 {
-	struct reg_handle *h = (struct reg_handle *) handle;
+	struct regbuf_handle *h = (struct regbuf_handle *) handle;
 	return h->data_length;
 }

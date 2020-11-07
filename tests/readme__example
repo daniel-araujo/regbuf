@@ -3,12 +3,12 @@
 set -e
 
 dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-srcfile="$(mktemp /tmp/reg.XXXXXXXXXX)"
-exefile="$(mktemp /tmp/reg.XXXXXXXXXX)"
+srcfile="$(mktemp /tmp/regbuf.XXXXXXXXXX)"
+exefile="$(mktemp /tmp/regbuf.XXXXXXXXXX)"
 
 sed -n '/^```c/,/^```/ p' < "$dir/../README.md" | sed '1d;$d' > "$srcfile"
 
-cc -o "$exefile" -I"$dir/.." "$dir/../reg.c" -xc - < "$srcfile"
+cc -o "$exefile" -I"$dir/.." "$dir/../regbuf.c" -xc - < "$srcfile"
 
 output="$("$exefile")"
 

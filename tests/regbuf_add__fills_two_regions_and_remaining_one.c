@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../reg.h"
+#include "../regbuf.h"
 
 int main(int argc, char *argv[])
 {
@@ -8,28 +8,28 @@ int main(int argc, char *argv[])
 	char region2[5] = {};
 	char region3[5] = {};
 
-	struct reg_opts_region regions[] = {
-		(struct reg_opts_region) {
+	struct regbuf_opts_region regions[] = {
+		(struct regbuf_opts_region) {
 			.buffer = region1,
 			.length = sizeof(region1),
 		},
-		(struct reg_opts_region) {
+		(struct regbuf_opts_region) {
 			.buffer = region2,
 			.length = sizeof(region2),
 		},
-		(struct reg_opts_region) {
+		(struct regbuf_opts_region) {
 			.buffer = region3,
 			.length = sizeof(region3),
 		},
 	};
 
-	reg_t reg = reg_create(&(struct reg_opts) {
+	regbuf_t r = regbuf_create(&(struct regbuf_opts) {
 		.regions = regions,
 		.regions_length = sizeof(regions) / sizeof(regions[0])
 	});
 
 	const char first[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-	size_t added = reg_add(reg, first, sizeof(first));
+	size_t added = regbuf_add(r, first, sizeof(first));
 
 	assert(added == 11);
 

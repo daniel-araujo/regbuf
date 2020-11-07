@@ -1,4 +1,4 @@
-// Reg release 1
+// Regbuf release 1
 //
 // copyright (c) 2020 Daniel Araujo
 //
@@ -34,7 +34,7 @@
 extern "C" {
 #endif
 
-struct reg_opts_region {
+struct regbuf_opts_region {
 	// Pointer to buffer.
 	void *buffer;
 
@@ -43,67 +43,67 @@ struct reg_opts_region {
 };
 
 // Options for creating a reg handle.
-struct reg_opts
+struct regbuf_opts
 {
 	// Pointer to array of regions.
-	struct reg_opts_region *regions;
+	struct regbuf_opts_region *regions;
 
 	// Number of regions in array.
 	size_t regions_length;
 };
 
-enum reg_error
+enum regbuf_error
 {
-	REG_ERROR_NONE = 0,
-	REG_ERROR_OUT_OF_MEMORY = 1,
+	regbuf_ERROR_NONE = 0,
+	regbuf_ERROR_OUT_OF_MEMORY = 1,
 };
 
 // Do not look at this.
-typedef struct { int reg; } *reg_t;
+typedef struct { int reg; } *regbuf_t;
 
 /*
  * See options struct for more details.
  *
  * The handle is not thread-safe. Synchronization between threads is up to you.
  *
- * You must call reg_error to check if the handle was successfully created. if
+ * You must call regbuf_error to check if the handle was successfully created. if
  * the handle failed to be created correctly then you can only pass it to
- * reg_error and reg_destroy. Any other functions will result in undefined
+ * regbuf_error and regbuf_destroy. Any other functions will result in undefined
  * behavior.
  */
-reg_t reg_create(struct reg_opts *opts);
+regbuf_t regbuf_create(struct regbuf_opts *opts);
 
 /*
  * Disposes resources. The handle can no longer be used after calling this
  * method.
  */
-void reg_destroy(reg_t handle);
+void regbuf_destroy(regbuf_t handle);
 
 /*
  * Checks if handle is still usable. If this returns a value other than
- * REG_ERROR_NONE then you should destroy the handle.
+ * regbuf_ERROR_NONE then you should destroy the handle.
  */
-enum reg_error reg_error(reg_t handle);
+enum regbuf_error regbuf_error(regbuf_t handle);
 
 /*
  * Adds data. Returns length added, starting from the first index of data.
  */
-size_t reg_add(reg_t handle, const void *data, size_t length);
+size_t regbuf_add(regbuf_t handle, const void *data, size_t length);
 
 /**
  * Retrieves data from the buffer. Returns actual length written to data.
  */
-size_t reg_get(reg_t handle, void *data, size_t length);
+size_t regbuf_get(regbuf_t handle, void *data, size_t length);
 
 /*
  * Removes oldest data from buffer. Returns actual length removed.
  */
-size_t reg_pop(reg_t handle, size_t length);
+size_t regbuf_pop(regbuf_t handle, size_t length);
 
 /*
  * Reports how much space is used.
  */
-size_t reg_used(reg_t handle);
+size_t regbuf_used(regbuf_t handle);
 
 #ifdef __cplusplus
 }
