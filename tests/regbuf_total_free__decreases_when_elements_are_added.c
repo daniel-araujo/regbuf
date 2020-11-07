@@ -21,11 +21,7 @@ int main(int argc, char *argv[])
 	const char data[] = { 1, 2 };
 	regbuf_add(r, data, sizeof(data));
 
-	assert(regbuf_free(r) == 1);
-
-	regbuf_pop(r, 1);
-
-	assert(regbuf_free(r) == 2);
+	assert(regbuf_total_free(r) == 1);
 
 	return 0;
 }

@@ -108,12 +108,12 @@ size_t regbuf_total(regbuf_t handle);
 /*
  * Reports number of elements that can be retrieved: used space.
  */
-size_t regbuf_used(regbuf_t handle);
+size_t regbuf_total_used(regbuf_t handle);
 
 /*
  * Reports how many elements can be added: free space.
  */
-size_t regbuf_free(regbuf_t handle);
+size_t regbuf_total_free(regbuf_t handle);
 
 #ifdef __cplusplus
 }

@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
 	assert(read == 0);
 
-	assert(regbuf_used(r) == 4);
+	assert(regbuf_total_used(r) == 4);
 	
 	assert(buffer[0] == 0);
 	assert(buffer[1] == 0);

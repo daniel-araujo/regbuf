@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 
 	// This is undefined behavior. Please report if it fails on your
 	// platform.
-	assert(regbuf_used(r) == -1);
+	assert(regbuf_total_used(r) == -1);
 
 	return 0;
 }

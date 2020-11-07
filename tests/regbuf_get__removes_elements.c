@@ -25,13 +25,13 @@ int main(int argc, char *argv[])
 	size_t read1 = regbuf_get(r, buffer1, sizeof(buffer1));
 
 	assert(read1 == 3);
-	assert(regbuf_used(r) == 1);
+	assert(regbuf_total_used(r) == 1);
 
 	char buffer2[2];
 	size_t read2 = regbuf_get(r, buffer2, sizeof(buffer2));
 
 	assert(read2 == 1);
-	assert(regbuf_used(r) == 0);
+	assert(regbuf_total_used(r) == 0);
 
 	return 0;
 }

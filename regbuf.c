@@ -330,14 +330,14 @@ size_t regbuf_total(regbuf_t handle)
 	return total;
 }
 
-size_t regbuf_used(regbuf_t handle)
+size_t regbuf_total_used(regbuf_t handle)
 {
 	struct regbuf_handle *h = (struct regbuf_handle *) handle;
 
 	return h->data_length;
 }
 
-size_t regbuf_free(regbuf_t handle)
+size_t regbuf_total_free(regbuf_t handle)
 {
-	return regbuf_total(handle) - regbuf_used(handle);
+	return regbuf_total(handle) - regbuf_total_used(handle);
 }

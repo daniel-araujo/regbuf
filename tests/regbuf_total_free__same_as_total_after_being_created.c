@@ -18,10 +18,7 @@ int main(int argc, char *argv[])
 		.regions_length = sizeof(regions) / sizeof(regions[0])
 	});
 
-	const char data[] = { 1, 2 };
-	regbuf_add(r, data, sizeof(data));
-
-	assert(regbuf_free(r) == 1);
+	assert(regbuf_total_free(r) == regbuf_total(r));
 
 	return 0;
 }
