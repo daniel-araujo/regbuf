@@ -90,7 +90,7 @@ enum regbuf_error regbuf_error(regbuf_t handle);
  */
 size_t regbuf_add(regbuf_t handle, const void *data, size_t length);
 
-/**
+/*
  * Retrieves data from the buffer. Returns actual length written to data.
  */
 size_t regbuf_get(regbuf_t handle, void *data, size_t length);
