@@ -101,7 +101,12 @@ size_t regbuf_get(regbuf_t handle, void *data, size_t length);
 size_t regbuf_pop(regbuf_t handle, size_t length);
 
 /*
- * Reports how much space is used.
+ * Reports number of elements that can be placed over all regions: total space.
+ */
+size_t regbuf_total(regbuf_t handle);
+
+/*
+ * Reports number of elements that can be retrieved: used space.
  */
 size_t regbuf_used(regbuf_t handle);
 

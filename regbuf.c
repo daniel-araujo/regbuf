@@ -317,8 +317,22 @@ size_t regbuf_get(regbuf_t handle, void *data, size_t length)
 	return retrieved;
 }
 
+size_t regbuf_total(regbuf_t handle)
+{
+	struct regbuf_handle *h = (struct regbuf_handle *) handle;
+
+	size_t total = 0;
+
+	for (size_t region = 0; region < h->regions_length; region++) {
+		total += h->regions[region].length;
+	}
+
+	return total;
+}
+
 size_t regbuf_used(regbuf_t handle)
 {
 	struct regbuf_handle *h = (struct regbuf_handle *) handle;
+
 	return h->data_length;
 }
