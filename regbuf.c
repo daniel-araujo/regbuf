@@ -336,3 +336,8 @@ size_t regbuf_used(regbuf_t handle)
 
 	return h->data_length;
 }
+
+size_t regbuf_free(regbuf_t handle)
+{
+	return regbuf_total(handle) - regbuf_used(handle);
+}
