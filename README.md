@@ -1,7 +1,7 @@
 # Regbuf
 
-A ring buffer that spans over multiple regions in portable C code. Useful in
-memory constrained environments with multiple memory regions.
+A ring buffer that spans over multiple regions, in portable C code. Useful in
+memory constrained environments where memory is broken up in regions.
 
 
 ## How to use
