@@ -54,8 +54,8 @@ struct regbuf_opts
 
 enum regbuf_error
 {
-	regbuf_ERROR_NONE = 0,
-	regbuf_ERROR_OUT_OF_MEMORY = 1,
+	REGBUF_ERROR_NONE = 0,
+	REGBUF_ERROR_OUT_OF_MEMORY = 1,
 };
 
 // Do not look at this.
@@ -81,7 +81,7 @@ void regbuf_destroy(regbuf_t handle);
 
 /*
  * Checks if handle is still usable. If this returns a value other than
- * regbuf_ERROR_NONE then you should destroy the handle.
+ * REGBUF_ERROR_NONE then you should destroy the handle.
  */
 enum regbuf_error regbuf_error(regbuf_t handle);
 

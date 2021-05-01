@@ -174,9 +174,9 @@ enum regbuf_error regbuf_error(regbuf_t handle)
 	struct regbuf_handle *h = (struct regbuf_handle *) handle;
 
 	if (h == NULL) {
-		return regbuf_ERROR_OUT_OF_MEMORY;
+		return REGBUF_ERROR_OUT_OF_MEMORY;
 	} else {
-		return regbuf_ERROR_NONE;
+		return REGBUF_ERROR_NONE;
 	}
 }
 
