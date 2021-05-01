@@ -319,6 +319,66 @@ size_t regbuf_get(regbuf_t handle, void *data, size_t length)
 	return retrieved;
 }
 
+size_t regbuf_get_offset(regbuf_t handle, void *data, size_t length, size_t offset)
+{
+	struct regbuf_handle *h = (struct regbuf_handle *) handle;
+
+	size_t retrieved = 0;
+
+	size_t head_region_index = h->head_region_index;
+	size_t head_region = h->head_region;
+
+	while (offset > 0) {
+		size_t region_remaining = up_to_tail(h, head_region, head_region_index);
+
+		if (region_remaining == 0) {
+			// No more data left in any region.
+			break;
+		}
+
+		if (offset > region_remaining) {
+			// Head to the next one.
+			head_region_index = 0;
+			head_region = next_region(h, head_region);
+			offset -= region_remaining;
+		} else {
+			head_region_index += offset;
+			offset = 0;
+		}
+	}
+
+	while (length > 0) {
+		size_t region_remaining = up_to_tail(h, head_region, head_region_index);
+
+		if (region_remaining == 0) {
+			// No more data left in any region.
+			break;
+		}
+
+		if (length < region_remaining) {
+			// Looks like some data will remain in this region.
+			region_remaining = length;
+		}
+
+		unsigned char *region_buffer = h->regions[head_region].buffer;
+
+		memmove((char *) data + retrieved, region_buffer + head_region_index, region_remaining);
+
+		length -= region_remaining;
+		retrieved += region_remaining;
+
+		head_region_index += region_remaining;
+
+		if (head_region_index == h->regions[head_region].length) {
+			// Head to the next one.
+			head_region_index = 0;
+			head_region = next_region(h, head_region);
+		}
+	}
+
+	return retrieved;
+}
+
 void regbuf_reset(regbuf_t handle)
 {
 	struct regbuf_handle *h = (struct regbuf_handle *) handle;

@@ -96,6 +96,11 @@ size_t regbuf_add(regbuf_t handle, const void *data, size_t length);
 size_t regbuf_get(regbuf_t handle, void *data, size_t length);
 
 /*
+ * Similar to regbuf_get but allows you to skip data.
+ */
+size_t regbuf_get_offset(regbuf_t handle, void *data, size_t length, size_t offset);
+
+/*
  * Removes oldest data from buffer. Returns actual length removed.
  */
 size_t regbuf_pop(regbuf_t handle, size_t length);
