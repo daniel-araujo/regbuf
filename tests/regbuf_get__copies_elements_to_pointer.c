@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
 
 	assert(read2 == 2);
 
-	assert(buffer2[0] == 4);
-	assert(buffer2[1] == 5);
+	assert(buffer2[0] == 1);
+	assert(buffer2[1] == 2);
 
 	return 0;
 }
