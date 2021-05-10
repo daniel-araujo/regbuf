@@ -341,14 +341,23 @@ size_t regbuf_get_offset(regbuf_t handle, void *data, size_t length, size_t offs
 			break;
 		}
 
-		if (offset >= region_remaining) {
+		if (region_remaining > offset) {
+			region_remaining = offset;
+		}
+
+		current_region_index += region_remaining;
+		offset -= region_remaining;
+
+		if (current_region_index == h->regions[current_region].length) {
 			// Head to the next one.
 			current_region_index = 0;
 			current_region = next_region(h, current_region);
-			offset -= region_remaining;
-		} else {
-			current_region_index += offset;
-			offset = 0;
+		}
+
+		if (current_region == h->tail_region && current_region_index == h->tail_region_index) {
+			// Offset goes past the end. Must not read anything.
+			length = 0;
+			break;
 		}
 	}
 
