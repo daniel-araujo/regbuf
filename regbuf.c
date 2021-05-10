@@ -341,7 +341,7 @@ size_t regbuf_get_offset(regbuf_t handle, void *data, size_t length, size_t offs
 			break;
 		}
 
-		if (offset > region_remaining) {
+		if (offset >= region_remaining) {
 			// Head to the next one.
 			current_region_index = 0;
 			current_region = next_region(h, current_region);

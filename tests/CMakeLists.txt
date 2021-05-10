@@ -23,6 +23,7 @@ endfunction(test_sh)
 
 test_sh(readme__example)
 
+test_single_c_file(bugfix__does_not_wrap_around_when_offset_lands_at_end_of_last_region)
 test_single_c_file(bugfix__popping_length_of_partially_filled_region_moves_head_to_next_region)
 test_single_c_file(bugfix__unexpected_wrap_around)
 
