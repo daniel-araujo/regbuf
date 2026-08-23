@@ -145,7 +145,7 @@ static inline size_t up_to_tail(struct regbuf_handle *h, size_t region, size_t i
 
 regbuf_t regbuf_create(struct regbuf_opts *opts)
 {
-	if (opts->regions_length == 0) {
+	if (opts == NULL || opts->regions == NULL || opts->regions_length == 0) {
 		return NULL;
 	}
 
