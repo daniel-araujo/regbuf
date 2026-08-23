@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <stdint.h>
 
 #include "regbuf.h"
 
@@ -145,6 +146,11 @@ static inline size_t up_to_tail(struct regbuf_handle *h, size_t region, size_t i
 regbuf_t regbuf_create(struct regbuf_opts *opts)
 {
 	if (opts->regions_length == 0) {
+		return NULL;
+	}
+
+	if (opts->regions_length > (SIZE_MAX - sizeof(struct regbuf_handle)) / sizeof(struct regbuf_opts_region)) {
+		// Would overflow the size passed to malloc below.
 		return NULL;
 	}
 
