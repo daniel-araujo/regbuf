@@ -239,7 +239,7 @@ size_t regbuf_add(regbuf_t handle, const void *data, size_t length)
 			region_remaining = data_remaining;
 		}
 
-		memcpy(region_buffer + h->tail_region_index, (char *) data + data_offset, region_remaining);
+		memcpy(region_buffer + h->tail_region_index, (const char *) data + data_offset, region_remaining);
 
 		data_offset += region_remaining;
 		data_remaining -= region_remaining;
