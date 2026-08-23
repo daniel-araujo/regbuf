@@ -148,6 +148,15 @@ regbuf_t regbuf_create(struct regbuf_opts *opts)
 		return NULL;
 	}
 
+	for (size_t region = 0; region < opts->regions_length; region++) {
+		if (opts->regions[region].length == 0) {
+			// A zero-length region would make it impossible to
+			// distinguish "no space/data" from "landed on an
+			// empty region" during traversal.
+			return NULL;
+		}
+	}
+
 	// How much memory region info takes up.
 	const size_t mem_regions = opts->regions_length * sizeof(struct regbuf_opts_region);
 

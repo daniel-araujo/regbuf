@@ -62,7 +62,8 @@ enum regbuf_error
 typedef struct { int reg; } *regbuf_t;
 
 /*
- * See options struct for more details.
+ * See options struct for more details. Every region must have a length
+ * greater than 0; a zero-length region will cause creation to fail.
  *
  * The handle is not thread-safe. Synchronization between threads is up to you.
  *
